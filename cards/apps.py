@@ -1,7 +1,7 @@
 from django.apps import AppConfig
 
 
-class CartasConfig(AppConfig):
+class CardsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'cartas'
+    name = 'cards'
     verbose_name = 'Card Editor'

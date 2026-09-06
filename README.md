@@ -1,215 +1,215 @@
 # Card Editor - Backend (Django)
 
-API REST para crear y editar cartas de juego con buffs y efectos.
+REST API for creating and editing game cards with buffs and effects.
 
 ## Stack
 
 - **Framework**: Django 5.0 (LTS)
 - **API**: Django REST Framework
-- **Database**: SQLite (desarrollo) / PostgreSQL (producción)
+- **Database**: SQLite (development) / PostgreSQL (production)
 - **CORS**: django-cors-headers
 - **Environment**: python-decouple
 
-## Instalación
+## Installation
 
-### Requisitos previos
+### Prerequisites
 - Python 3.10+
 - pip
 
-### Pasos de instalación
+### Installation steps
 
-1. **Clonar el repositorio**
+1. **Clone the repository**
    ```bash
    git clone https://github.com/yourusername/card-editor-backend.git
    cd card-editor-backend
    ```
 
-2. **Crear y activar virtual environment**
+2. **Create and activate a virtual environment**
    ```bash
    python -m venv venv
-   source venv/bin/activate  # En Windows: venv\Scripts\activate
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
 
-3. **Instalar dependencias**
+3. **Install dependencies**
    ```bash
    pip install -r requirements.txt
    ```
 
-4. **Configurar variables de entorno**
+4. **Configure environment variables**
    ```bash
    cp .env.example .env
-   # Editar .env con tus valores
+   # Edit .env with your values
    ```
 
-5. **Ejecutar migraciones**
+5. **Run migrations**
    ```bash
    python manage.py migrate
    ```
 
-6. **Crear superusuario (opcional, para Django Admin)**
+6. **Create a superuser (optional, for Django Admin)**
    ```bash
    python manage.py createsuperuser
    ```
 
-7. **Cargar configuración inicial**
+7. **Load initial configuration**
    ```bash
    python manage.py load_config
    ```
 
-8. **Ejecutar servidor de desarrollo**
+8. **Run the development server**
    ```bash
    python manage.py runserver
    ```
 
-El backend estará disponible en `http://localhost:8000/api/`
+The backend will be available at `http://localhost:8000/api/`
 
 ## API Endpoints
 
-### Cartas
-- `GET /api/cartas/` - Listar todas las cartas
-- `POST /api/cartas/` - Crear una nueva carta
-- `GET /api/cartas/{id}/` - Obtener detalle de una carta
-- `PUT /api/cartas/{id}/` - Actualizar una carta
-- `DELETE /api/cartas/{id}/` - Eliminar una carta
-- `POST /api/cartas/{id}/add-buff/` - Agregar buff a carta
-- `DELETE /api/cartas/{id}/remove-buff/{buff_id}/` - Remover buff
-- `POST /api/cartas/{id}/add-efecto/` - Agregar efecto a carta
-- `DELETE /api/cartas/{id}/remove-efecto/{efecto_id}/` - Remover efecto
+### Cards
+- `GET /api/cards/` - List all cards
+- `POST /api/cards/` - Create a new card
+- `GET /api/cards/{id}/` - Get card detail
+- `PUT /api/cards/{id}/` - Update a card
+- `DELETE /api/cards/{id}/` - Delete a card
+- `POST /api/cards/{id}/add-buff/` - Add buff to card
+- `DELETE /api/cards/{id}/remove-buff/{buff_id}/` - Remove buff
+- `POST /api/cards/{id}/add-effect/` - Add effect to card
+- `DELETE /api/cards/{id}/remove-effect/{effect_id}/` - Remove effect
 
 ### Buffs
-- `GET /api/buffs/` - Listar todos los buffs
-- `GET /api/buffs/{id}/` - Obtener detalle de un buff
+- `GET /api/buffs/` - List all buffs
+- `GET /api/buffs/{id}/` - Get buff detail
 
-### Efectos
-- `GET /api/efectos/` - Listar todos los efectos
-- `GET /api/efectos/{id}/` - Obtener detalle de un efecto
+### Effects
+- `GET /api/effects/` - List all effects
+- `GET /api/effects/{id}/` - Get effect detail
 
-## Modelo de Datos
+## Data Model
 
 ### Buff
 ```json
 {
   "id": 1,
   "name": "HealthBoost",
-  "description": "Aumenta la vida",
-  "atributos": [
-    {"nombre": "hp", "tipo": "entero"},
-    {"nombre": "regen", "tipo": "entero"}
+  "description": "Increases health",
+  "attributes": [
+    {"name": "hp", "type": "integer"},
+    {"name": "regen", "type": "integer"}
   ]
 }
 ```
 
-### Efecto
+### Effect
 ```json
 {
   "id": 1,
   "name": "Burn",
-  "description": "Quema progresiva",
-  "atributos": [
-    {"nombre": "damage", "tipo": "entero"},
-    {"nombre": "duration", "tipo": "entero"}
+  "description": "Progressive burn damage",
+  "attributes": [
+    {"name": "damage", "type": "integer"},
+    {"name": "duration", "type": "integer"}
   ]
 }
 ```
 
-### Carta (creación)
+### Card (creation)
 ```json
 {
-  "titulo": "Fire Dragon",
-  "descripcion": "Un dragón de fuego puro",
-  "imagen": "https://example.com/images/dragon.jpg",
-  "nivel": 5,
-  "razas": ["Dragon", "Fire"],
-  "ataque": 8,
-  "vida": 10
+  "title": "Fire Dragon",
+  "description": "A pure fire dragon",
+  "image": "https://example.com/images/dragon.jpg",
+  "level": 5,
+  "races": ["Dragon", "Fire"],
+  "attack": 8,
+  "health": 10
 }
 ```
 
-## Agregar Buffs/Efectos a Cartas
+## Adding Buffs/Effects to Cards
 
-### Agregar Buff
+### Add Buff
 ```bash
-POST /api/cartas/1/add-buff/
+POST /api/cards/1/add-buff/
 {
   "buff": 1,
-  "parametros": {"hp": 10, "regen": 2}
+  "parameters": {"hp": 10, "regen": 2}
 }
 ```
 
-### Agregar Efecto
+### Add Effect
 ```bash
-POST /api/cartas/1/add-efecto/
+POST /api/cards/1/add-effect/
 {
-  "efecto": 1,
-  "parametros": {"damage": 5, "duration": 3}
+  "effect": 1,
+  "parameters": {"damage": 5, "duration": 3}
 }
 ```
 
-## Configuración
+## Configuration
 
-Las variables de configuración se cargan desde `.env`:
+Configuration variables are loaded from `.env`:
 
-- `AVAILABLE_LEVELS`: Niveles disponibles (ej: 1,2,3,4,5)
-- `AVAILABLE_RACES`: Razas disponibles (ej: Human,Elf,Dwarf)
-- `AVAILABLE_EFFECTS`: Nombres de efectos
-- `AVAILABLE_BUFFS`: Nombres de buffs
+- `AVAILABLE_LEVELS`: Available levels (e.g.: 1,2,3,4,5)
+- `AVAILABLE_RACES`: Available races (e.g.: Human,Elf,Dwarf)
+- `AVAILABLE_EFFECTS`: Effect names
+- `AVAILABLE_BUFFS`: Buff names
 
-**Nota**: Los efectos y buffs deben ser configurados con sus atributos en Django Admin.
+**Note**: Effects and buffs must be configured with their attributes in Django Admin.
 
 ## Django Admin
 
-Accede a `http://localhost:8000/admin/` para gestionar:
-- Cartas
-- Buffs (con sus atributos)
-- Efectos (con sus atributos)
-- Buffs aplicados a cartas
-- Efectos contenidos en cartas
+Go to `http://localhost:8000/admin/` to manage:
+- Cards
+- Buffs (with their attributes)
+- Effects (with their attributes)
+- Buffs applied to cards
+- Effects contained in cards
 
-## Conexión con Frontend
+## Connecting with the Frontend
 
-El frontend Angular debe usar las siguientes variables de entorno:
+The Angular frontend should use the following environment variables:
 
 ```env
-# environment.ts o environment.prod.ts
+# environment.ts or environment.prod.ts
 export const environment = {
   production: false,
   apiUrl: 'http://localhost:8000/api'
 };
 ```
 
-Asegúrate de que `CORS_ALLOWED_ORIGINS` en `.env` incluya la URL del frontend:
+Make sure `CORS_ALLOWED_ORIGINS` in `.env` includes the frontend URL:
 ```env
 CORS_ALLOWED_ORIGINS=http://localhost:4200,http://127.0.0.1:4200
 ```
 
-## Desarrollo
+## Development
 
-### Crear migraciones después de cambios en models
+### Create migrations after changes to models
 ```bash
 python manage.py makemigrations
 python manage.py migrate
 ```
 
-### Tests (cuando se agreguen)
+### Tests (once added)
 ```bash
 python manage.py test
 ```
 
-## Producción
+## Production
 
-Para desplegar con Gunicorn:
+To deploy with Gunicorn:
 
 ```bash
 gunicorn config.wsgi --bind 0.0.0.0:8000
 ```
 
-Asegúrate de:
-1. Establecer `DEBUG=False` en `.env`
-2. Generar una `SECRET_KEY` segura
-3. Configurar `ALLOWED_HOSTS` con tu dominio
-4. Usar PostgreSQL en lugar de SQLite
-5. Configurar `CORS_ALLOWED_ORIGINS` con el dominio del frontend
+Make sure to:
+1. Set `DEBUG=False` in `.env`
+2. Generate a secure `SECRET_KEY`
+3. Configure `ALLOWED_HOSTS` with your domain
+4. Use PostgreSQL instead of SQLite
+5. Configure `CORS_ALLOWED_ORIGINS` with the frontend's domain
 
-## Licencia
+## License
 
 MIT

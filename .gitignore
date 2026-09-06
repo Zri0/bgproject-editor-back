@@ -1,0 +1,62 @@
+# Environment
+.env
+.env.local
+.env.*.local
+.venv
+env/
+venv/
+ENV/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Database
+db.sqlite3
+db.sqlite3-journal
+
+# Static files
+staticfiles/
+/static/
+
+# Media
+/media/
+*.jpg
+*.jpeg
+*.png
+*.gif
+
+# Django
+*.log
+local_settings.py
+
+# Misc
+.coverage
+htmlcov/
+.pytest_cache/

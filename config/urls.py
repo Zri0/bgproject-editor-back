@@ -5,20 +5,20 @@ from rest_framework.response import Response
 
 @api_view(['GET'])
 def api_root(request):
-    """Root endpoint de la API"""
+    """API root endpoint"""
     return Response({
         'message': 'Card Editor API',
         'version': '1.0.0',
         'endpoints': {
-            'cartas': '/api/cartas/',
+            'cards': '/api/cards/',
             'buffs': '/api/buffs/',
-            'efectos': '/api/efectos/',
+            'effects': '/api/effects/',
         }
     })
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', api_root),
-    path('api/', include('cartas.urls')),
+    path('api/', include('cards.urls')),
     path('api-auth/', include('rest_framework.urls')),
 ]
