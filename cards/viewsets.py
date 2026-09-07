@@ -58,7 +58,7 @@ class CardViewSet(viewsets.ModelViewSet):
     queryset = Card.objects.all().prefetch_related('applied_buffs', 'effects')
 
     def get_serializer_class(self):
-        if self.action == 'retrieve':
+        if self.action in ('retrieve', 'create', 'update', 'partial_update'):
             return CardDetailSerializer
         return CardListSerializer
 
