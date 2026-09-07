@@ -45,7 +45,7 @@ class CardListSerializer(serializers.ModelSerializer):
     """Simplified serializer for listings (without expanded relationships)"""
     class Meta:
         model = Card
-        fields = ['id', 'title', 'level', 'health', 'attack', 'created_at', 'updated_at']
+        fields = ['id', 'title', 'image', 'level', 'health', 'attack', 'created_at', 'updated_at']
         read_only_fields = ['created_at', 'updated_at']
 
 

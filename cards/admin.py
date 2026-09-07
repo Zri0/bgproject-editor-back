@@ -62,7 +62,7 @@ class CardAdmin(admin.ModelAdmin):
         if obj.image:
             return format_html(
                 '<img src="{}" style="max-width: 200px; max-height: 200px;" />',
-                obj.image
+                obj.image.url
             )
         return "—"
     image_preview.short_description = "Preview"

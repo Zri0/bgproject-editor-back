@@ -113,17 +113,25 @@ The backend will be available at `http://localhost:8000/api/`
 ```
 
 ### Card (creation)
-```json
-{
-  "title": "Fire Dragon",
-  "description": "A pure fire dragon",
-  "image": "https://example.com/images/dragon.jpg",
-  "level": 5,
-  "races": ["Dragon", "Fire"],
-  "attack": 8,
-  "health": 10
-}
+
+The `image` field is an uploaded file stored and served by Django (not a URL).
+Send the request as `multipart/form-data`:
+
+```bash
+curl -X POST http://localhost:8000/api/cards/ \
+  -F "title=Fire Dragon" \
+  -F "description=A pure fire dragon" \
+  -F "image=@dragon.jpg" \
+  -F "level=5" \
+  -F "races=1" -F "races=2" \
+  -F "attack=8" \
+  -F "health=10"
 ```
+
+Responses return `image` as an absolute URL (e.g. `http://localhost:8000/media/cards/dragon.jpg`),
+or `null` when no image was uploaded. `image` is optional; on `PUT`/`PATCH` omit it to keep
+the current file. Uploaded files live under `MEDIA_ROOT` (default `<BASE_DIR>/media/cards/`)
+and are served at `/media/` while `DEBUG=True`.
 
 ## Adding Buffs/Effects to Cards
 
@@ -209,6 +217,8 @@ Make sure to:
 3. Configure `ALLOWED_HOSTS` with your domain
 4. Use PostgreSQL instead of SQLite
 5. Configure `CORS_ALLOWED_ORIGINS` with the frontend's domain
+6. Point `MEDIA_ROOT` at a persistent directory and have the web server (nginx/Apache)
+   or an object storage backend serve `/media/` — Django does not serve it when `DEBUG=False`
 
 ## License
 

@@ -79,7 +79,12 @@ class Card(models.Model):
     """
     title = models.CharField(max_length=255)
     description = models.TextField(blank=True)
-    image = models.URLField(help_text="URL of the card's image")
+    image = models.ImageField(
+        upload_to='cards/',
+        blank=True,
+        null=True,
+        help_text="Card image file (stored and served by Django)"
+    )
     level = models.IntegerField()
     races = models.ManyToManyField(Race, related_name='cards', blank=True, help_text="Races assigned to this card")
     attack = models.IntegerField()
