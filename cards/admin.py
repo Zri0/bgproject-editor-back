@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import Buff, Effect, Race, Card, CardAppliedBuff, CardContainedEffect
+from .models import Buff, Effect, Race, Collection, Card, CardAppliedBuff, CardContainedEffect
 
 
 @admin.register(Buff)
@@ -34,19 +34,30 @@ class RaceAdmin(admin.ModelAdmin):
     readonly_fields = ['created_at', 'updated_at']
 
 
+@admin.register(Collection)
+class CollectionAdmin(admin.ModelAdmin):
+    list_display = ['name', 'cards_count', 'created_at']
+    search_fields = ['name', 'description']
+    readonly_fields = ['created_at', 'updated_at']
+
+    def cards_count(self, obj):
+        return obj.cards.count()
+    cards_count.short_description = "Cards"
+
+
 @admin.register(Card)
 class CardAdmin(admin.ModelAdmin):
-    list_display = ['title', 'level', 'health', 'attack', 'races_display', 'created_at']
-    list_filter = ['level', 'races', 'created_at']
+    list_display = ['title', 'level', 'health', 'attack', 'races_display', 'collections_display', 'created_at']
+    list_filter = ['level', 'races', 'collections', 'created_at']
     search_fields = ['title', 'description']
     readonly_fields = ['created_at', 'updated_at', 'image_preview']
-    filter_horizontal = ['races']
+    filter_horizontal = ['races', 'collections']
     fieldsets = (
         ('Basic Information', {
             'fields': ('title', 'description', 'image', 'image_preview')
         }),
         ('Attributes', {
-            'fields': ('level', 'races', 'attack', 'health')
+            'fields': ('level', 'races', 'collections', 'attack', 'health')
         }),
         ('Timestamps', {
             'fields': ('created_at', 'updated_at'),
@@ -57,6 +68,10 @@ class CardAdmin(admin.ModelAdmin):
     def races_display(self, obj):
         return ', '.join(r.name for r in obj.races.all()) or "—"
     races_display.short_description = "Races"
+
+    def collections_display(self, obj):
+        return ', '.join(c.name for c in obj.collections.all()) or "—"
+    collections_display.short_description = "Collections"
 
     def image_preview(self, obj):
         if obj.image:

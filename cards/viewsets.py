@@ -2,11 +2,12 @@ from rest_framework import viewsets, status, serializers
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
-from .models import Buff, Effect, Race, Card, CardAppliedBuff, CardContainedEffect
+from .models import Buff, Effect, Race, Collection, Card, CardAppliedBuff, CardContainedEffect
 from .serializers import (
     BuffSerializer,
     EffectSerializer,
     RaceSerializer,
+    CollectionSerializer,
     CardListSerializer,
     CardDetailSerializer,
     CardAppliedBuffSerializer,
@@ -39,6 +40,16 @@ class RaceViewSet(viewsets.ReadOnlyModelViewSet):
     """
     queryset = Race.objects.all()
     serializer_class = RaceSerializer
+
+
+class CollectionViewSet(viewsets.ModelViewSet):
+    """
+    Full ViewSet for Collection CRUD.
+    A Collection is a named group of Cards; a Card can belong to zero,
+    one, or many Collections.
+    """
+    queryset = Collection.objects.all()
+    serializer_class = CollectionSerializer
 
 
 class CardViewSet(viewsets.ModelViewSet):

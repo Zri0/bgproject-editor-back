@@ -72,6 +72,25 @@ class Race(models.Model):
         ordering = ['name']
 
 
+class Collection(models.Model):
+    """
+    Collection: A named group of Cards.
+    A Card can belong to zero, one, or many Collections.
+    """
+    name = models.CharField(max_length=255, unique=True)
+    description = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Collection"
+        verbose_name_plural = "Collections"
+        ordering = ['name']
+
+
 class Card(models.Model):
     """
     Card: The main entity of the editor.
@@ -87,6 +106,7 @@ class Card(models.Model):
     )
     level = models.IntegerField()
     races = models.ManyToManyField(Race, related_name='cards', blank=True, help_text="Races assigned to this card")
+    collections = models.ManyToManyField(Collection, related_name='cards', blank=True, help_text="Collections this card belongs to")
     attack = models.IntegerField()
     health = models.IntegerField()
     created_at = models.DateTimeField(auto_now_add=True)

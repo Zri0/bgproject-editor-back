@@ -4,6 +4,11 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularSwaggerView,
+    SpectacularRedocView,
+)
 
 @api_view(['GET'])
 def api_root(request):
@@ -23,6 +28,9 @@ urlpatterns = [
     path('api/', api_root),
     path('api/', include('cards.urls')),
     path('api-auth/', include('rest_framework.urls')),
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'),
+    path('api/redoc/', SpectacularRedocView.as_view(url_name='schema'), name='redoc'),
 ]
 
 if settings.DEBUG:
